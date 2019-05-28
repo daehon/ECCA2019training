@@ -1,0 +1,57 @@
+import cdstoolbox as ct
+
+layout = {
+    'output_align': 'bottom'
+}
+
+variables = {
+    'Near-Surface Air Temperature': '2m_temperature',
+    'Eastward Near-Surface Wind': '10m_u_component_of_wind',
+    'Westward Near-Surface Wind': '10m_v_component_of_wind',
+    'Sea Level Pressure': 'mean_sea_level_pressure',
+    'Sea Surface Temperature': 'sea_surface_temperature',
+}
+
+@ct.application(title='Plot Map', layout=layout)
+@ct.input.dropdown('variable', label='Variable', values=variables.keys())
+@ct.input.dropdown('region', values=['CAPV', 'Iberian Penninsula', 'Europe', 'Arctic', 'Mediterranean', 'Global'])
+@ct.output.figure()
+
+def plot_map(variable,region):
+    """
+    Application main steps:
+
+    - set the application layout with output at the bottom
+    - select a variable name from a list in the dropdown menu
+    - retrieve the selected variable
+    - compose a title
+    - show the result on a map using the chosen title
+
+    """
+
+    extent = {
+        'Europe': [-11, 35, 34, 60],
+        'Arctic': [-180, 180, 70, 90],
+        'Mediterranean': [-5.2, 34, 31, 45],
+        'Global': [-67, -180, 59, 180],
+        #'Global': [-180, 180, -90, 90],
+        'Iberian Penninsula': [35, -10, 44, 5],
+        'CAPV': [42, -3, 43.8, -1],
+    }
+    data = ct.catalogue.retrieve(
+        'reanalysis-era5-single-levels',
+        {
+            'variable': variables[variable],
+            'product_type': 'reanalysis',
+            'year': '2010',
+            'month': '08',
+            'day': '15',
+            'time': '12:00',
+            'area':extent[region],
+        }
+    )
+
+    title = '{}'.format(' '.join([text.capitalize() for text in variable.split('_')]))
+    fig = ct.cdsplot.geomap(data, title=title)
+
+    return fig
