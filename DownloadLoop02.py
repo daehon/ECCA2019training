@@ -3,7 +3,7 @@
 #1# Define the working directory ##############################################
 import os
 print("Current Working Directory " , os.getcwd())
-os.chdir("C:/Users/108700/Proyectos/CursoECCA2019/03 ejemplo python/CDS api/prueba")
+os.chdir("C:/Users/1...") #Include here the path to the folder where files will be downloaded
 
 #2# Example of loop and functions #############################################
 
