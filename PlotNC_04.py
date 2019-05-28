@@ -113,7 +113,7 @@ import numpy as np
 
 ### 2 ### import data from nc to numpy arrays #################################
 
-ruta="C:/Users/108700/Proyectos/CursoECCA2019/03 ejemplo python/CDS api/"
+ruta="C:/Users/..." #change this. include the route the the .nc file
 file01 = Dataset(ruta+'era5Spain_201008.nc', mode='r')
 
 print("----")
